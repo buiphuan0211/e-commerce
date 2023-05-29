@@ -1,0 +1,52 @@
+version: "3.8"
+services:
+  # Zookeeper
+  zookeeper:
+    container_name: "zookeeper"
+    image: "zookeeper:3.8"
+    restart: always
+    volumes:
+      - ./data/zookeeper/zkdata:/data
+      - ./data/zookeeper/log:/datalog
+    #environment:
+    #  - JVMFLAGS="-Xmx512m -Xms512m"
+    ports:
+      - "2181:2181"
+
+  # Redis
+  redis:
+    container_name: "redis"
+    image: "redis:7.0.5-alpine"
+    restart: always
+    volumes:
+      - ./data/redis:/data
+    ports:
+      - "6379:6379"
+
+  # Rabbitmq
+  rabbitmq:
+    image: "rabbitmq:3.8.9-management-alpine"
+    restart: always
+    container_name: "rabbitmq"
+    volumes:
+      - ./data/rbmq:/var/lib/rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  mongodb:
+    container_name: "mongodb"
+    image: mongo:5.0
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data/mongodb/db:/data/db
+      - ./data/mongodb/configdb:/data/configdb
+  nats:
+    container_name: nats
+    image: nats
+    restart: always
+    ports:
+      - '4222:4222'
+      - '8222:8222'
+    command: "-js"

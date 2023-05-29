@@ -1,0 +1,122 @@
+basePath: /admin/ecommerce
+definitions:
+  ptime.TimeResponse:
+    properties:
+      time:
+        type: string
+    type: object
+  requestmodel.UserCreate:
+    properties:
+      name:
+        type: string
+    type: object
+  responsemodel.Upsert:
+    properties:
+      _id:
+        type: string
+    type: object
+  responsemodel.UserAll:
+    properties:
+      limit:
+        type: integer
+      list:
+        items:
+          $ref: '#/definitions/responsemodel.UserBrief'
+        type: array
+      total:
+        type: integer
+    type: object
+  responsemodel.UserBrief:
+    properties:
+      _id:
+        type: string
+      createdAt:
+        $ref: '#/definitions/ptime.TimeResponse'
+      name:
+        type: string
+      updatedAt:
+        $ref: '#/definitions/ptime.TimeResponse'
+    type: object
+info:
+  contact:
+    email: buiphuan0211@gmail.com
+    name: Dev An Bui
+    url: https://github.com/buiphuan0211
+  description: |
+    All APIs for e-commerce admin.
+
+    ******************************
+    - Add description
+    ******************************
+  title: e-commerce - Admin API
+  version: "1.0"
+paths:
+  /ping:
+    get:
+      consumes:
+      - application/json
+      operationId: ping
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Ping
+      tags:
+      - Common
+  /users:
+    get:
+      consumes:
+      - application/json
+      operationId: admin-user-all
+      parameters:
+      - in: query
+        name: keyword
+        type: string
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responsemodel.UserAll'
+      security:
+      - ApiKeyAuth: []
+      summary: All
+      tags:
+      - User
+    post:
+      consumes:
+      - application/json
+      operationId: admin-user-create
+      parameters:
+      - description: Payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/requestmodel.UserCreate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responsemodel.Upsert'
+      security:
+      - ApiKeyAuth: []
+      summary: Create
+      tags:
+      - User
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

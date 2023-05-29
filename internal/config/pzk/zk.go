@@ -1,0 +1,52 @@
+package pzk
+
+import (
+	"ecommerce/internal/config"
+	"fmt"
+	"os"
+)
+
+// Zookeeper ...
+func Zookeeper() {
+	uri := os.Getenv("ZOOKEEPER_URI")
+	if err := Connect(uri); err != nil {
+		panic(err)
+	}
+
+	envVars := config.GetENV()
+	server(envVars)
+	commonValues(envVars)
+}
+
+// server ...
+func server(envVars *config.ENV) {
+	// Admin
+	adminPrefix := getAdminPrefix("")
+	envVars.Admin.Server = GetStringValue(fmt.Sprintf("%s/server_port/server", adminPrefix))
+	envVars.Admin.Port = GetStringValue(fmt.Sprintf("%s/server_port/port", adminPrefix))
+
+	// Mongodb
+	commonPrefix := getCommonPrefix("")
+	envVars.MongoDB.URI = GetStringValue(fmt.Sprintf("%s/mongodb/uri", commonPrefix))
+	envVars.MongoDB.DBName = GetStringValue(fmt.Sprintf("%s/mongodb/db_name", commonPrefix))
+
+	fmt.Println("commonPrefix: ", commonPrefix)
+	fmt.Println("envVars.MongoDB.URI: ", envVars.MongoDB.URI)
+	fmt.Println("envVars.MongoDB.DBName: ", envVars.MongoDB.DBName)
+
+	// Authentication
+	envVars.Auth.SecretKey = GetStringValue(fmt.Sprintf("%s/auth/secret_key", commonPrefix))
+}
+
+// commonValues ...
+func commonValues(envVars *config.ENV) {}
+
+// getAdminPrefix ...
+func getAdminPrefix(group string) string {
+	return fmt.Sprintf("%s%s", config.GetENV().ZookeeperPrefixEcommerceAdmin, group)
+}
+
+// getCommonPrefix ...
+func getCommonPrefix(group string) string {
+	return fmt.Sprintf("%s%s", config.GetENV().ZookeeperPrefixEcommerceCommon, group)
+}

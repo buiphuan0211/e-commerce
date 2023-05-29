@@ -1,0 +1,186 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "All APIs for e-commerce admin.\n\n******************************\n- Add description\n******************************\n",
+        "title": "e-commerce - Admin API",
+        "contact": {
+            "name": "Dev An Bui",
+            "url": "https://github.com/buiphuan0211",
+            "email": "buiphuan0211@gmail.com"
+        },
+        "version": "1.0"
+    },
+    "basePath": "/admin/ecommerce",
+    "paths": {
+        "/ping": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Common"
+                ],
+                "summary": "Ping",
+                "operationId": "ping",
+                "responses": {}
+            }
+        },
+        "/users": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "All",
+                "operationId": "admin-user-all",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "keyword",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "page",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responsemodel.UserAll"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Create",
+                "operationId": "admin-user-create",
+                "parameters": [
+                    {
+                        "description": "Payload",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requestmodel.UserCreate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responsemodel.Upsert"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "ptime.TimeResponse": {
+            "type": "object",
+            "properties": {
+                "time": {
+                    "type": "string"
+                }
+            }
+        },
+        "requestmodel.UserCreate": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "responsemodel.Upsert": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "responsemodel.UserAll": {
+            "type": "object",
+            "properties": {
+                "limit": {
+                    "type": "integer"
+                },
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/responsemodel.UserBrief"
+                    }
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "responsemodel.UserBrief": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "$ref": "#/definitions/ptime.TimeResponse"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "$ref": "#/definitions/ptime.TimeResponse"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}
