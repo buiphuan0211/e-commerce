@@ -19,4 +19,4 @@
 .vscode
 
 # Volume data
-data
+./data

@@ -2,7 +2,7 @@ version: "3.8"
 services:
   # Zookeeper
   zookeeper:
-    container_name: "zookeeper"
+    container_name: "zookeeper_emc"
     image: "zookeeper:3.8"
     restart: always
     volumes:
@@ -15,7 +15,7 @@ services:
 
   # Redis
   redis:
-    container_name: "redis"
+    container_name: "redis_emc"
     image: "redis:7.0.5-alpine"
     restart: always
     volumes:
@@ -27,14 +27,14 @@ services:
   rabbitmq:
     image: "rabbitmq:3.8.9-management-alpine"
     restart: always
-    container_name: "rabbitmq"
+    container_name: "rabbitmq_emc"
     volumes:
       - ./data/rbmq:/var/lib/rabbitmq
     ports:
       - "5672:5672"
       - "15672:15672"
   mongodb:
-    container_name: "mongodb"
+    container_name: "mongodb_emc"
     image: mongo:5.0
     restart: always
     ports:
@@ -43,7 +43,7 @@ services:
       - ./data/mongodb/db:/data/db
       - ./data/mongodb/configdb:/data/configdb
   nats:
-    container_name: nats
+    container_name: "nats_emc"
     image: nats
     restart: always
     ports:
